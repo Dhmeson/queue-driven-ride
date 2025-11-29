@@ -1,0 +1,38 @@
+{
+  "name": "uber-like-queue",
+  "version": "1.0.0",
+  "type": "module",
+  "scripts": {
+    "build": "tsc -p tsconfig.json",
+    "start": "npm run build && node dist/index.js",
+    "worker": "npm run build && node dist/worker.js",
+    "dev": "concurrently \"npm run start\" \"npm run worker\"",
+    "pm2:start": "pm2 start ecosystem.config.js",
+    "pm2:stop": "pm2 stop ecosystem.config.js",
+    "pm2:restart": "pm2 restart ecosystem.config.js",
+    "pm2:delete": "pm2 delete ecosystem.config.js",
+    "pm2:logs": "pm2 logs",
+    "prisma:generate": "prisma generate",
+    "prisma:format": "prisma format",
+    "docker:up": "docker-compose up -d"
+  },
+  "dependencies": {
+    "@bull-board/api": "^6.14.2",
+    "@bull-board/express": "^6.14.2",
+    "@prisma/client": "^5.22.0",
+    "body-parser": "^1.20.2",
+    "bullmq": "^5.65.0",
+    "dotenv": "^17.2.3",
+    "express": "^5.1.0",
+    "ioredis": "^5.8.2",
+    "prisma": "^5.22.0",
+    "uuid": "^9.0.0"
+  },
+  "devDependencies": {
+    "@types/body-parser": "^1.19.5",
+    "@types/express": "^4.17.21",
+    "@types/node": "^20.11.30",
+    "@types/uuid": "^9.0.7",
+    "typescript": "^5.6.3"
+  }
+}

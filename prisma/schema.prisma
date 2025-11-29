@@ -1,0 +1,52 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Corrida {
+  id          String      @id @db.Uuid
+  clienteId   String      @map("cliente_id") @db.Uuid
+  motoristaId String      @map("motorista_id") @db.Uuid
+  origem      Json?
+  destino     Json?
+  distanciaKm Decimal?    @map("distancia_km")
+  status      String      @db.VarChar(30)
+  valor       Decimal?
+  createdAt   DateTime    @default(now()) @map("created_at")
+  updatedAt   DateTime    @updatedAt @map("updated_at")
+  Pagamentos  Pagamento[] @relation("CorridaPagamentos")
+
+  @@map("corridas")
+}
+
+model Motorista {
+  id        String   @id @db.Uuid
+  nome      String?
+  saldo     Decimal? @default(0)
+  createdAt DateTime @default(now()) @map("created_at")
+
+  @@map("motoristas")
+}
+
+model Pagamento {
+  id          String   @id @db.Uuid
+  corridaId   String?  @map("corrida_id") @db.Uuid
+  corrida     Corrida? @relation(fields: [corridaId], references: [id], name: "CorridaPagamentos")
+  motoristaId String?  @map("motorista_id") @db.Uuid
+  valor       Decimal?
+  createdAt   DateTime @default(now()) @map("created_at")
+
+  @@map("pagamentos")
+}
+
+model CorridaJob {
+  id          String   @id @map("job_id")
+  corridaId   String?  @map("corrida_id") @db.Uuid
+  processedAt DateTime @default(now()) @map("processed_at")
+
+  @@map("corrida_jobs")
+}
